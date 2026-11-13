@@ -60,7 +60,7 @@ threads = [
 def main():
     print("--- Início do Jantar dos Filósofos ---")
     
-    # Criação das threads para cada filósofo
+    # Criação das threads para cada filósofo, codigo documentacao
     threads = [
         threading.Thread(target=crawl, args=(i, 2))
         for i in range(n)
