@@ -5,17 +5,31 @@ import time
 
 n = 5
 garfos = [threading.Lock() for _ in range(n)]
+estados = {1: "PENSANDO", 2: "FAMINTO", 3: "COMENDO"}
+filosofos = [
+    {"posicao": i, "estado": 1, "tempoNoEstado": 0}
+    for i in range(n)
+]
 
-def crawl(id_filosofo, delay=3):
-    idx_garfo_1 = (id_filosofo - 1) % n
-    idx_garfo_2 = id_filosofo
+def garfo(p):
+    numero_garfo_1 = (p - 1) % n
+    numero_garfo_2 = p
+    
+    garfo_1 = garfos[numero_garfo_1]
+    garfo_2 = garfos[numero_garfo_2]
+    return numero_garfo_1, numero_garfo_2,  garfo_1, garfo_2
 
-    garfo_1 = garfos[idx_garfo_1]
-    garfo_2 = garfos[idx_garfo_2]
-    print(f"Filósofo {id_filosofo} está tentando pegar os garfos {idx_garfo_1} e {idx_garfo_2}.")
-    print(f"Filósofo {id_filosofo} começou a pensar/comer.")
+def crawl(p, delay=3):
+    f = filosofos[p]
+    garfo_esquerdo, garfo_direito= garfo(p)
+    if f["tempoNoEstado"] > 0:
+        f["estado"] = (f["estado"] + 1) % 3
+    f["tempoNoEstado"] += 1
+
+    print(f"Filósofo {filosofos[p]['posicao']} está tentando pegar os garfos {garfo_esquerdo} e {garfo_direito}.")
+    print(f"Filósofo {filosofos[p]['posicao']} começou a {filosofos[p]['estado']}.")
     time.sleep(delay)
-    print(f"Filósofo {id_filosofo} terminou.")
+    print(f"Filósofo {filosofos[p]['posicao']} terminou.")
 
 threads = [
     threading.Thread(target=crawl, args=(i, ), kwargs={"delay": 2})
