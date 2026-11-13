@@ -1,0 +1,1 @@
+# DEADLOCK com Hierarquia de Locks
